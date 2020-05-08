@@ -13,14 +13,4 @@ public class EmployeedataApplication {
 		SpringApplication.run(EmployeedataApplication.class, args);
 	}
 
-//	@Bean(initMethod = "migrate")
-//	@FlywayDataSource
-//	@Primary
-//	public Flyway primaryFlyway(FlywayPrimaryProperties properties) {
-//		Flyway flyway = new Flyway();
-//		flyway.setDataSource(primaryDataSource);
-//		flyway.setLocations(properties.getLocation());
-//		return flyway;
-//	}
-
 }
