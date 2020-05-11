@@ -11,6 +11,6 @@ public class PartialUpdateUtil {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void update(Country existingCountry, CountryResource updatedResource, Class<CountryUpdate> updateClass) {
-
+        System.out.println("asd");
     }
 }
