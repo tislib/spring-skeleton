@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class CountryResource {
+public class CountryResource implements CountryUpdate{
 
     @Id
     private Integer id;

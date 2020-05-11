@@ -6,6 +6,7 @@ import com.timesoft.hr.employeedata.data.CountryRepository;
 import com.timesoft.hr.employeedata.resource.CountryResource;
 import com.timesoft.hr.employeedata.resource.CountryUpdate;
 import com.timesoft.hr.employeedata.resource.mapping.CountryMapper;
+import com.timesoft.hr.employeedata.util.PartialUpdateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
@@ -18,8 +19,6 @@ public class CountryServiceImpl implements CountryService {
 
     private final CountryRepository repository;
     private final CountryMapper mapper;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Page<CountryResource> list(Pageable pageable) {
@@ -46,11 +45,11 @@ public class CountryServiceImpl implements CountryService {
         Country existingCountry = repository.getOne(id);
         CountryResource existingResource = mapper.toResource(existingCountry);
 
-        existingResource = objectMapper.updateValue(existingResource, updatedResource);
+        PartialUpdateUtil.update(existingCountry, updatedResource, CountryUpdate.class);
 
         Country countryForUpdate = mapper.fromResource(existingResource);
-        countryForUpdate = repository.save(countryForUpdate);
+        repository.save(countryForUpdate);
 
-        return mapper.toResource(countryForUpdate);
+        return get(id);
     }
 }

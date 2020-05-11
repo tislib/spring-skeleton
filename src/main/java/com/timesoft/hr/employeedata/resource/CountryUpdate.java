@@ -1,6 +1,8 @@
 package com.timesoft.hr.employeedata.resource;
 
-public interface CountryUpdate {
+import com.timesoft.hr.employeedata.resource.base.PartialUpdate;
+
+public interface CountryUpdate extends PartialUpdate {
 
     String getName();
 
