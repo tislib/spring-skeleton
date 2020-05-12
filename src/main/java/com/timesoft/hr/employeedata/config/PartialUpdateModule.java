@@ -6,13 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
-import com.fasterxml.jackson.databind.module.SimpleDeserializers;
-import com.timesoft.hr.employeedata.lib.partial.PartialResource;
-import com.timesoft.hr.employeedata.resource.base.PartialUpdate;
+import com.timesoft.hr.employeedata.resource.base.BaseResource;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class PartialUpdateModule extends Module {
@@ -32,7 +27,7 @@ public class PartialUpdateModule extends Module {
     public void setupModule(SetupContext context) {
         context.addBeanDeserializerModifier(new BeanDeserializerModifier() {
             public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
-                return PartialUpdate.class.isAssignableFrom(beanDesc.getBeanClass()) ? new PartialResourceDeserializer(deserializer, beanDesc.getBeanClass()) : deserializer;
+                return BaseResource.class.isAssignableFrom(beanDesc.getBeanClass()) ? new PartialResourceDeserializer(deserializer, beanDesc.getBeanClass()) : deserializer;
             }
         });
     }

@@ -1,6 +1,5 @@
 package com.timesoft.hr.employeedata.config;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -9,21 +8,15 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.TreeTraversingParser;
+import com.timesoft.hr.employeedata.resource.base.BaseResource;
+
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.timesoft.hr.employeedata.resource.base.PartialUpdate;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
-
-public class PartialResourceDeserializer extends StdDeserializer<PartialUpdate> implements ResolvableDeserializer {
-    private static final long serialVersionUID = 1L;
+public class PartialResourceDeserializer extends StdDeserializer<BaseResource> implements ResolvableDeserializer {
     static final String UNABLE_TO_READ_FIELD = "Unable to read field %s from object %s";
+    private static final long serialVersionUID = 1L;
     private final JsonDeserializer<?> defaultDeserializer;
 
     PartialResourceDeserializer(JsonDeserializer<?> defaultDeserializer, Class<?> valueType) {
@@ -31,15 +24,26 @@ public class PartialResourceDeserializer extends StdDeserializer<PartialUpdate> 
         this.defaultDeserializer = defaultDeserializer;
     }
 
-    public PartialUpdate deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-        JsonNode node = (JsonNode)parser.readValueAsTree();
+    public BaseResource deserialize(JsonParser parser, DeserializationContext context) throws IOException {
+        JsonNode node = parser.readValueAsTree();
+        JsonParser newParser = new TreeTraversingParser(node, parser.getCodec());
 
-        //Object resource = defaultDeserializer.deserialize(new )
+        newParser.nextToken();
 
-        return (PartialUpdate) null;
+        BaseResource resource = (BaseResource) defaultDeserializer.deserialize(newParser, context);
+
+        Set<String> fields = new HashSet<>();
+
+        node.fields().forEachRemaining(item -> {
+            fields.add(item.getKey());
+        });
+
+        resource.setFields(fields);
+
+        return resource;
     }
 
     public void resolve(DeserializationContext context) throws JsonMappingException {
-        ((ResolvableDeserializer)this.defaultDeserializer).resolve(context);
+        ((ResolvableDeserializer) this.defaultDeserializer).resolve(context);
     }
 }
