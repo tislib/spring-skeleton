@@ -1,6 +1,5 @@
 package com.timesoft.hr.employeedata.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timesoft.hr.employeedata.data.Country;
 import com.timesoft.hr.employeedata.data.CountryRepository;
 import com.timesoft.hr.employeedata.resource.CountryResource;
@@ -45,7 +44,9 @@ public class CountryServiceImpl implements CountryService {
         Country existingCountry = repository.getOne(id);
         CountryResource existingResource = mapper.toResource(existingCountry);
 
-        PartialUpdateUtil.update(existingCountry, updatedResource, CountryUpdate.class);
+        PartialUpdateUtil.validate(updatedResource, CountryUpdate.class);
+
+        PartialUpdateUtil.update(existingResource, updatedResource);
 
         Country countryForUpdate = mapper.fromResource(existingResource);
         repository.save(countryForUpdate);

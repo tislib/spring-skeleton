@@ -34,7 +34,7 @@ public class CountryController {
     }
 
     @PatchMapping(API_ID_RESOURCE)
-    public CountryResource update(@PathVariable Integer id, @Validated @RequestBody CountryResource country) {
+    public CountryResource update(@PathVariable Integer id, @RequestBody CountryResource country) {
         return service.update(id, country);
     }
 
