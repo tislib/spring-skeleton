@@ -44,9 +44,9 @@ public class CountryServiceImpl implements CountryService {
         Country existingCountry = repository.getOne(id);
         CountryResource existingResource = mapper.toResource(existingCountry);
 
-        PartialUpdateUtil.validate(updatedResource, CountryUpdate.class);
-
         PartialUpdateUtil.update(existingResource, updatedResource);
+
+        PartialUpdateUtil.validate(existingResource, CountryUpdate.class);
 
         Country countryForUpdate = mapper.fromResource(existingResource);
         repository.save(countryForUpdate);
