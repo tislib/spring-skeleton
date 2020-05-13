@@ -12,4 +12,6 @@ public interface CountryService {
     CountryResource create(CountryResource country);
 
     CountryResource update(Integer id, CountryResource country);
+
+    void delete(Integer id);
 }

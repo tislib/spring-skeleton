@@ -50,6 +50,8 @@ dependencies {
 
     compile "org.flywaydb:flyway-core:6.4.1"
 
+    compile group: 'com.github.javafaker', name: 'javafaker', version: '0.15'
+
     compileOnly("org.mapstruct:mapstruct-jdk8:${mapstructVersion}")
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 

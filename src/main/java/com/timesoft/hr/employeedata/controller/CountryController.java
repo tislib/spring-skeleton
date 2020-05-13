@@ -28,6 +28,11 @@ public class CountryController {
         return service.get(id);
     }
 
+    @DeleteMapping(API_ID_RESOURCE)
+    public void delete(@PathVariable Integer id) {
+        service.delete(id);
+    }
+
     @PostMapping
     public CountryResource create(@Validated @RequestBody CountryResource country) {
         return service.create(country);

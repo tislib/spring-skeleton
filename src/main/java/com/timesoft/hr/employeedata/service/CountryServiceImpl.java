@@ -32,6 +32,12 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
+    public void delete(Integer id) {
+        Country country = repository.getOne(id);
+        repository.delete(country);
+    }
+
+    @Override
     public CountryResource create(CountryResource countryResource) {
         Country country = mapper.fromResource(countryResource);
         Country updatedCountry = repository.save(country);
