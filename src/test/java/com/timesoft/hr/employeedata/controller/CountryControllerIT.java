@@ -49,8 +49,8 @@ public class CountryControllerIT extends BaseIntegrationTest {
                 .contentType("application/json"))
                 .andExpect(status().isOk())
                 .andExpect(matchAll(
-                        jsonPath("$.code", is(123)),
-                        jsonPath("$.isoCode", is("aa")),
+                        jsonPath("$." + CountryResource.Fields.code, is(123)),
+                        jsonPath("$." + CountryResource.Fields.isoCode, is("aa")),
                         jsonPath("$.iso3Code", is("aaa")),
                         jsonPath("$.name", is("test-country")),
                         jsonPath("$.nationality", is("test-nationality"))

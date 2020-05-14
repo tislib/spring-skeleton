@@ -45,7 +45,6 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    @SneakyThrows
     public CountryResource update(Integer id, CountryResource updatedResource) {
         Country existingCountry = repository.getOne(id);
         CountryResource existingResource = mapper.toResource(existingCountry);
