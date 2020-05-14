@@ -6,7 +6,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static com.timesoft.hr.employeedata.constants.ApiConstants.API_COUNTRIES;
@@ -27,26 +28,29 @@ public class CountryController {
 
     @GetMapping(API_ID_RESOURCE)
     @ApiOperation(value = "Gets country by id")
-    public CountryResource get(@PathVariable Integer id) {
-        return service.get(id);
+    public ResponseEntity<?> get(@PathVariable Integer id) {
+        return ResponseEntity.ok(service.get(id));
     }
 
     @DeleteMapping(API_ID_RESOURCE)
     @ApiOperation(value = "Deletes country by id")
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
         service.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
     @ApiOperation(value = "Create country")
-    public CountryResource create(@Validated @RequestBody CountryResource country) {
-        return service.create(country);
+    public ResponseEntity<?> create(@RequestBody CountryResource country) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(service.create(country));
     }
 
     @PatchMapping(API_ID_RESOURCE)
     @ApiOperation(value = "Update country")
-    public CountryResource update(@PathVariable Integer id, @RequestBody CountryResource country) {
-        return service.update(id, country);
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody CountryResource country) {
+        return ResponseEntity.ok(service.update(id, country));
     }
 
 }

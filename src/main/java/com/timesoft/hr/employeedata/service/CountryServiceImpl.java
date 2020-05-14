@@ -39,7 +39,10 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryResource create(CountryResource countryResource) {
+        PartialUpdateUtil.validate(countryResource, countryResource, CountryResource.class);
+
         Country country = mapper.fromResource(countryResource);
+
         Country updatedCountry = repository.save(country);
         return mapper.toResource(updatedCountry);
     }
@@ -51,7 +54,7 @@ public class CountryServiceImpl implements CountryService {
 
         PartialUpdateUtil.update(existingResource, updatedResource);
 
-        PartialUpdateUtil.validate(existingResource, CountryUpdate.class);
+        PartialUpdateUtil.validate(existingResource, updatedResource, CountryUpdate.class);
 
         Country countryForUpdate = mapper.fromResource(existingResource);
         repository.save(countryForUpdate);

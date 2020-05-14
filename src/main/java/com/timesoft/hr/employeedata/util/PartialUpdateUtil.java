@@ -1,16 +1,17 @@
 package com.timesoft.hr.employeedata.util;
 
+import com.timesoft.hr.employeedata.exception.handler.DisallowedUpdateException;
+import com.timesoft.hr.employeedata.resource.base.AllowAllFields;
 import com.timesoft.hr.employeedata.resource.base.PartialUpdate;
 import com.timesoft.hr.employeedata.resource.base.Resource;
 import lombok.experimental.UtilityClass;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.ReflectionUtils;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import javax.validation.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @UtilityClass
 public class PartialUpdateUtil {
@@ -22,7 +23,7 @@ public class PartialUpdateUtil {
         validator = factory.getValidator();
     }
 
-    public static <T extends Resource> void update(T existingCountry, T updatedResource) {
+    public static <T extends Resource> void update(T existingResource, T updatedResource) {
         Set<String> ignoredProperties = new HashSet<>();
         ignoredProperties.add("id");
 
@@ -32,10 +33,34 @@ public class PartialUpdateUtil {
             }
         });
 
-        BeanUtils.copyProperties(updatedResource, existingCountry, ignoredProperties.toArray(new String[0]));
+        BeanUtils.copyProperties(updatedResource, existingResource, ignoredProperties.toArray(new String[0]));
     }
 
-    public static <UT extends PartialUpdate, T extends Resource> void validate(T updatedResource, Class<UT> countryUpdateClass) {
-        validator.validate(updatedResource);
+    public static <UT extends PartialUpdate, T extends Resource> void validate(T existingResource, T updatedResource, Class<UT> updateClass) {
+        Set<ConstraintViolation<T>> errors = validator.validate(existingResource);
+
+        if (errors.size() > 0) {
+            throw new ConstraintViolationException(errors);
+        }
+
+        // if resource class is annotated with AllowAllFields annotation we bypass field check
+        if (updateClass.getAnnotation(AllowAllFields.class) == null) {
+            Set<String> allowedFieldsForUpdate = new HashSet<>();
+            ReflectionUtils.doWithMethods(updateClass, method -> {
+                String methodName = method.getName();
+                if (methodName.startsWith("get") || methodName.startsWith("is")) {
+                    String fieldName = methodName.substring(3, 4).toLowerCase() + methodName.substring(4);
+                    allowedFieldsForUpdate.add(fieldName);
+                }
+            });
+
+            HashSet<String> disallowedUpdatedFields = new HashSet<>(updatedResource.getFields());
+            disallowedUpdatedFields.removeAll(allowedFieldsForUpdate);
+            if (disallowedUpdatedFields.size() > 0) {
+                String message = "Updating fields not allowed: " + String.join(",", disallowedUpdatedFields);
+                throw new DisallowedUpdateException(disallowedUpdatedFields, message);
+            }
+        }
+
     }
 }
