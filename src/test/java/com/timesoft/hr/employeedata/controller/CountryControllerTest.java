@@ -10,6 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 
@@ -43,9 +45,10 @@ class CountryControllerTest {
 
         when(service.create(resource)).thenReturn(resource);
 
-        CountryResource result = controller.create(resource);
+        ResponseEntity<?> result = controller.create(resource);
 
-        assertEquals(resource, result);
+        assertEquals(resource, result.getBody());
+        assertEquals(HttpStatus.CREATED, result.getStatusCode());
     }
 
     @Test
@@ -55,9 +58,10 @@ class CountryControllerTest {
 
         when(service.update(id, resource)).thenReturn(resource);
 
-        CountryResource result = controller.update(id, resource);
+        ResponseEntity<?> result = controller.update(id, resource);
 
-        assertEquals(resource, result);
+        assertEquals(resource, result.getBody());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
@@ -67,9 +71,10 @@ class CountryControllerTest {
 
         when(service.get(id)).thenReturn(resource);
 
-        CountryResource result = controller.get(id);
+        ResponseEntity<?> result = controller.get(id);
 
-        assertEquals(resource, result);
+        assertEquals(resource, result.getBody());
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
 }

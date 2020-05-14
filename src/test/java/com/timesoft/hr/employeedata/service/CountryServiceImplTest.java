@@ -54,11 +54,9 @@ class CountryServiceImplTest {
     void get() {
         int id = 3;
 
-        Country country = new Country();
-        country.setName("sample-country");
+        Country country = createDummyCountry();
 
-        CountryResource countryResource = new CountryResource();
-        countryResource.setName("sample-country");
+        CountryResource countryResource = createDummyCountryResource();
 
         when(repository.getOne(id)).thenReturn(country);
 
@@ -67,18 +65,38 @@ class CountryServiceImplTest {
         assertEquals(countryResource, result);
     }
 
-    @Test
-    void create() {
+    private CountryResource createDummyCountryResource() {
+        CountryResource resource = new CountryResource();
+        resource.setName("sample-country");
+        resource.setCode(994);
+        resource.setIso3Code("aze");
+        resource.setIsoCode("az");
+        resource.setNationality("sample-nationality");
+        return resource;
+    }
+
+    private Country createDummyCountry() {
         Country country = new Country();
         country.setName("sample-country");
+        country.setCode(994);
+        country.setIso3Code("aze");
+        country.setIsoCode("az");
+        country.setNationality("sample-nationality");
+        return country;
+    }
 
-        CountryResource countryResource = new CountryResource();
-        countryResource.setName("sample-country");
+    @Test
+    void create() {
+        Country country = createDummyCountry();
+
+        CountryResource countryResource = createDummyCountryResource();
+        countryResource.setFields(Collections.singleton("name"));
 
         when(repository.save(country)).thenReturn(country);
 
         CountryResource result = service.create(countryResource);
 
+        countryResource.setFields(null);
         assertEquals(countryResource, result);
     }
 
@@ -86,11 +104,10 @@ class CountryServiceImplTest {
     void update() {
         int id = 3;
 
-        Country country = new Country();
-        country.setName("sample-country");
+        Country country = createDummyCountry();
 
-        CountryResource countryResource = new CountryResource();
-        countryResource.setName("sample-country");
+        CountryResource countryResource = createDummyCountryResource();
+
         countryResource.setFields(Collections.singleton("name"));
 
         when(repository.getOne(id)).thenReturn(country);
