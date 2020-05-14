@@ -11,7 +11,6 @@ import org.springframework.util.ReflectionUtils;
 import javax.validation.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @UtilityClass
 public class PartialUpdateUtil {
