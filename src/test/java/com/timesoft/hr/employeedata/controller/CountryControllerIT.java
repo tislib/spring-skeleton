@@ -32,7 +32,7 @@ public class CountryControllerIT extends BaseIntegrationTest {
     @Test
     public void shouldDeleteCountry() throws Exception {
         this.mockMvc.perform(delete(API_COUNTRIES + "/" + API_ID_RESOURCE, 2))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class CountryControllerIT extends BaseIntegrationTest {
         this.mockMvc.perform(post(API_COUNTRIES)
                 .content(body(countryResource))
                 .contentType("application/json"))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(matchAll(
                         jsonPath("$." + CountryResource.Fields.code, is(123)),
                         jsonPath("$." + CountryResource.Fields.isoCode, is("aa")),
