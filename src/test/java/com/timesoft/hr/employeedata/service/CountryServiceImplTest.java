@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,13 +35,14 @@ class CountryServiceImplTest {
     CountryMapper mapper = new CountryMapperImpl();
 
     @Test
-    void list() {
+    void shouldListCountries() {
         Pageable pageable = Pageable.unpaged();
         Country country = new Country();
         country.setName("sample-country");
         Page<Country> pagedData = new PageImpl<>(Collections.singletonList(country));
         CountryResource countryResource = new CountryResource();
         countryResource.setName("sample-country");
+        countryResource.setCode(0);
         Page<Resource> expectedData = new PageImpl<>(Collections.singletonList(countryResource));
 
         when(repository.findAll(pageable)).thenReturn(pagedData);
@@ -51,7 +53,7 @@ class CountryServiceImplTest {
     }
 
     @Test
-    void get() {
+    void shouldGetCountryById() {
         int id = 3;
 
         Country country = createDummyCountry();
@@ -86,7 +88,7 @@ class CountryServiceImplTest {
     }
 
     @Test
-    void create() {
+    void shouldCreateCountry() {
         Country country = createDummyCountry();
 
         CountryResource countryResource = createDummyCountryResource();
@@ -101,7 +103,7 @@ class CountryServiceImplTest {
     }
 
     @Test
-    void update() {
+    void shouldUpdateCountry() {
         int id = 3;
 
         Country country = createDummyCountry();
@@ -117,5 +119,19 @@ class CountryServiceImplTest {
 
         countryResource.setFields(null);
         assertEquals(countryResource, result);
+    }
+
+    @Test
+    void shouldDeleteCountry() {
+        int id = 3;
+
+        Country country = createDummyCountry();
+
+        when(repository.getOne(id)).thenReturn(country);
+        doNothing().when(repository)
+                .delete(country);
+
+        service.delete(id);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.timesoft.hr.employeedata.resource;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.timesoft.hr.employeedata.resource.base.Resource;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,11 +12,14 @@ import lombok.experimental.FieldNameConstants;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @FieldNameConstants
 @ApiModel("Country")
+@JsonInclude(NON_NULL)
 public class CountryResource extends Resource implements CountryUpdate {
 
     @Id
@@ -23,7 +27,7 @@ public class CountryResource extends Resource implements CountryUpdate {
     private Integer id;
 
     @ApiModelProperty("Code")
-    private int code;
+    private Integer code;
 
     @NotNull
     @ApiModelProperty("ISO Code with 2 letters")

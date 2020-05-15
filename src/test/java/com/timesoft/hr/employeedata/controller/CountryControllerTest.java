@@ -28,7 +28,7 @@ class CountryControllerTest {
     CountryService service;
 
     @Test
-    public void list() {
+    public void shouldListCountries() {
         Pageable pageable = Pageable.unpaged();
         Page<CountryResource> pageData = new PageImpl<>(new ArrayList<>());
 
@@ -40,7 +40,7 @@ class CountryControllerTest {
     }
 
     @Test
-    public void create() {
+    public void shouldCreateCountry() {
         CountryResource resource = new CountryResource();
 
         when(service.create(resource)).thenReturn(resource);
@@ -52,7 +52,7 @@ class CountryControllerTest {
     }
 
     @Test
-    public void update() {
+    public void shouldUpdateCountry() {
         CountryResource resource = new CountryResource();
         int id = 1;
 
@@ -65,7 +65,7 @@ class CountryControllerTest {
     }
 
     @Test
-    public void get() {
+    public void shouldGetCountryById() {
         CountryResource resource = new CountryResource();
         int id = 1;
 
@@ -75,6 +75,15 @@ class CountryControllerTest {
 
         assertEquals(resource, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    public void shouldDeleteCountry() {
+        int id = 1;
+
+        ResponseEntity<?> result = controller.delete(id);
+
+        assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
     }
 
 }
