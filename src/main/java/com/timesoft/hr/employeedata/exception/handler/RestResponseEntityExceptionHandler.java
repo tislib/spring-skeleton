@@ -1,6 +1,8 @@
 package com.timesoft.hr.employeedata.exception.handler;
 
-import com.timesoft.hr.employeedata.exception.handler.ErrorMessageResponse.FieldError;
+import com.timesoft.hr.employeedata.exception.DisallowedUpdateException;
+import com.timesoft.hr.employeedata.exception.ErrorMessageResponse;
+import com.timesoft.hr.employeedata.exception.ErrorMessageResponse.FieldError;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -25,6 +28,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         errorMessageResponse.setErrors(
                 ex.getConstraintViolations().stream()
                         .map(this::constraintViolationToFieldError)
+                        .sorted(Comparator.comparing(FieldError::getFieldPath))
                         .collect(Collectors.toList())
         );
 

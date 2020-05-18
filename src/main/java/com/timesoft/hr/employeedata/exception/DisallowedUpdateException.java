@@ -1,4 +1,4 @@
-package com.timesoft.hr.employeedata.exception.handler;
+package com.timesoft.hr.employeedata.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

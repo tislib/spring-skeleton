@@ -1,9 +1,8 @@
 package com.timesoft.hr.employeedata.util;
 
-import com.timesoft.hr.employeedata.exception.handler.DisallowedUpdateException;
+import com.timesoft.hr.employeedata.exception.DisallowedUpdateException;
 import com.timesoft.hr.employeedata.resource.CountryResource;
 import com.timesoft.hr.employeedata.resource.CountryUpdate;
-import org.assertj.core.api.ErrorCollector;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolationException;

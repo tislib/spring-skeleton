@@ -1,6 +1,8 @@
 package com.timesoft.hr.employeedata.controller;
 
 import com.timesoft.hr.employeedata.resource.CountryResource;
+import com.timesoft.hr.employeedata.resource.base.BaseResource;
+import com.timesoft.hr.employeedata.resource.projection.IdAndNameProjection;
 import com.timesoft.hr.employeedata.service.CountryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -30,11 +33,11 @@ class CountryControllerTest {
     @Test
     public void shouldListCountries() {
         Pageable pageable = Pageable.unpaged();
-        Page<CountryResource> pageData = new PageImpl<>(new ArrayList<>());
+        Page<BaseResource> pageData = new PageImpl<>(new ArrayList<>());
 
-        when(service.list(pageable)).thenReturn(pageData);
+        when(service.list(pageable, Optional.of(CountryResource.Projection.ID_AND_NAME))).thenReturn(pageData);
 
-        Page<CountryResource> result = controller.list(pageable);
+        Page<BaseResource> result = controller.list(pageable, Optional.of(CountryResource.Projection.ID_AND_NAME));
 
         assertEquals(pageData, result);
     }
@@ -43,9 +46,9 @@ class CountryControllerTest {
     public void shouldCreateCountry() {
         CountryResource resource = new CountryResource();
 
-        when(service.create(resource)).thenReturn(resource);
+        when(service.create(resource, Optional.of(CountryResource.Projection.ID_AND_NAME))).thenReturn(resource);
 
-        ResponseEntity<?> result = controller.create(resource);
+        ResponseEntity<?> result = controller.create(resource, Optional.of(CountryResource.Projection.ID_AND_NAME));
 
         assertEquals(resource, result.getBody());
         assertEquals(HttpStatus.CREATED, result.getStatusCode());
@@ -56,9 +59,9 @@ class CountryControllerTest {
         CountryResource resource = new CountryResource();
         int id = 1;
 
-        when(service.update(id, resource)).thenReturn(resource);
+        when(service.update(id, resource, Optional.of(CountryResource.Projection.ID_AND_NAME))).thenReturn(resource);
 
-        ResponseEntity<?> result = controller.update(id, resource);
+        ResponseEntity<?> result = controller.update(id, resource, Optional.of(CountryResource.Projection.ID_AND_NAME));
 
         assertEquals(resource, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -69,9 +72,9 @@ class CountryControllerTest {
         CountryResource resource = new CountryResource();
         int id = 1;
 
-        when(service.get(id)).thenReturn(resource);
+        when(service.get(id, Optional.of(CountryResource.Projection.ID_AND_NAME))).thenReturn(resource);
 
-        ResponseEntity<?> result = controller.get(id);
+        ResponseEntity<?> result = controller.get(id, Optional.of(CountryResource.Projection.ID_AND_NAME));
 
         assertEquals(resource, result.getBody());
         assertEquals(HttpStatus.OK, result.getStatusCode());

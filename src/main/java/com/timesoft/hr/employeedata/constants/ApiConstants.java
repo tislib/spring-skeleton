@@ -12,4 +12,8 @@ public class ApiConstants {
 
     public final static String API_COUNTRIES = API_PATH + "/" + "countries";
 
+
+    public final static String PARAM_PROJECTION = "projection";
+    public final static String DEFAULT_PROJECTION = "DEFAULT";
+
 }

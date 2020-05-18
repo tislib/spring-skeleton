@@ -1,17 +1,21 @@
 package com.timesoft.hr.employeedata.service;
 
 import com.timesoft.hr.employeedata.resource.CountryResource;
+import com.timesoft.hr.employeedata.resource.CountryResource.Projection;
+import com.timesoft.hr.employeedata.resource.base.BaseResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+
 public interface CountryService {
-    Page<CountryResource> list(Pageable pageable);
+    Page<BaseResource> list(Pageable pageable, Optional<Projection> projection);
 
-    CountryResource get(Integer id);
+    BaseResource get(Integer id, Optional<Projection> projection);
 
-    CountryResource create(CountryResource country);
+    BaseResource create(CountryResource country, Optional<Projection> projection);
 
-    CountryResource update(Integer id, CountryResource country);
+    BaseResource update(Integer id, CountryResource country, Optional<Projection> projection);
 
     void delete(Integer id);
 }

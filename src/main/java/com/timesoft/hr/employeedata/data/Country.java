@@ -17,7 +17,7 @@ public class Country {
             allocationSize = 1)
     private Integer id;
 
-    private int code;
+    private Integer code;
 
     @NotNull
     @Column(name = "ISO_CODE")

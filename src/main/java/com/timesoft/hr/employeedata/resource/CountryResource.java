@@ -1,11 +1,15 @@
 package com.timesoft.hr.employeedata.resource;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.timesoft.hr.employeedata.resource.base.BaseProjection;
+import com.timesoft.hr.employeedata.resource.base.ProjectionName;
 import com.timesoft.hr.employeedata.resource.base.Resource;
+import com.timesoft.hr.employeedata.resource.projection.IdAndNameProjection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 
@@ -21,6 +25,14 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @ApiModel("Country")
 @JsonInclude(NON_NULL)
 public class CountryResource extends Resource implements CountryUpdate {
+
+    @RequiredArgsConstructor
+    @Getter
+    public enum Projection implements ProjectionName {
+        ID_AND_NAME(IdAndNameProjection.class);
+
+        private final Class<? extends BaseProjection> projectionClass;
+    }
 
     @Id
     @ApiModelProperty("Id")

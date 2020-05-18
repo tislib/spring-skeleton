@@ -1,6 +1,6 @@
 package com.timesoft.hr.employeedata.util;
 
-import com.timesoft.hr.employeedata.exception.handler.DisallowedUpdateException;
+import com.timesoft.hr.employeedata.exception.DisallowedUpdateException;
 import com.timesoft.hr.employeedata.resource.base.AllowAllFields;
 import com.timesoft.hr.employeedata.resource.base.PartialUpdate;
 import com.timesoft.hr.employeedata.resource.base.Resource;

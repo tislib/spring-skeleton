@@ -3,6 +3,7 @@ package com.timesoft.hr.employeedata.service;
 import com.timesoft.hr.employeedata.data.Country;
 import com.timesoft.hr.employeedata.data.CountryRepository;
 import com.timesoft.hr.employeedata.resource.CountryResource;
+import com.timesoft.hr.employeedata.resource.base.BaseResource;
 import com.timesoft.hr.employeedata.resource.base.Resource;
 import com.timesoft.hr.employeedata.resource.mapping.CountryMapper;
 import com.timesoft.hr.employeedata.resource.mapping.CountryMapperImpl;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doNothing;
@@ -42,12 +44,11 @@ class CountryServiceImplTest {
         Page<Country> pagedData = new PageImpl<>(Collections.singletonList(country));
         CountryResource countryResource = new CountryResource();
         countryResource.setName("sample-country");
-        countryResource.setCode(0);
         Page<Resource> expectedData = new PageImpl<>(Collections.singletonList(countryResource));
 
         when(repository.findAll(pageable)).thenReturn(pagedData);
 
-        Page<CountryResource> result = service.list(pageable);
+        Page<BaseResource> result = service.list(pageable, Optional.empty());
 
         assertEquals(expectedData, result);
     }
@@ -62,7 +63,7 @@ class CountryServiceImplTest {
 
         when(repository.getOne(id)).thenReturn(country);
 
-        CountryResource result = service.get(id);
+        BaseResource result = service.get(id, Optional.empty());
 
         assertEquals(countryResource, result);
     }
@@ -90,13 +91,16 @@ class CountryServiceImplTest {
     @Test
     void shouldCreateCountry() {
         Country country = createDummyCountry();
+        country.setId(123);
 
         CountryResource countryResource = createDummyCountryResource();
+        countryResource.setId(123);
         countryResource.setFields(Collections.singleton("name"));
 
         when(repository.save(country)).thenReturn(country);
+        when(repository.getOne(123)).thenReturn(country);
 
-        CountryResource result = service.create(countryResource);
+        BaseResource result = service.create(countryResource, Optional.empty());
 
         countryResource.setFields(null);
         assertEquals(countryResource, result);
@@ -115,7 +119,7 @@ class CountryServiceImplTest {
         when(repository.getOne(id)).thenReturn(country);
         when(repository.save(country)).thenReturn(country);
 
-        CountryResource result = service.update(id, countryResource);
+        BaseResource result = service.update(id, countryResource, Optional.empty());
 
         countryResource.setFields(null);
         assertEquals(countryResource, result);
