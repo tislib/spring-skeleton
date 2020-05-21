@@ -1,1 +1,1 @@
-# timesoft-hr-employee-data
+# Spring skeleton application
